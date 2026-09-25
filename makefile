@@ -9,8 +9,10 @@ all:
 install:
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	cp -f $(PROGRAM) $(DESTDIR)$(PREFIX)/bin
+	chmod 755 $(DESTDIR)$(PREFIX)/bin/$(PROGRAM)
 	mkdir -p $(DESTDIR)$(MANPREFIX)/man1
 	cp -f $(PROGRAM).1 $(DESTDIR)$(MANPREFIX)/man1
+	chmod 644 $(DESTDIR)$(MANPREFIX)/man1/$(PROGRAM).1
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PROGRAM)
