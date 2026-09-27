@@ -70,8 +70,8 @@ then
 		printf '%s\n' "$data"
 	else
 		line=$(printf '%s' "$data" | grep "^$2 ")
-		rawvalue=${line#* }
-		value=$(echo "$rawvalue" | sed 's/^\s*//')
+		value=$(echo "$line" \
+		      | sed 's/^[^[:space:]]*[[:space:]][[:space:]]*//')
 
 		[ -z "$value" ] && error "Field $2 is not set."
 
