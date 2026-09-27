@@ -8,7 +8,7 @@ all:
 
 install:
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
-	cp -f $(PROGRAM) $(DESTDIR)$(PREFIX)/bin
+	cp -f $(PROGRAM).sh $(DESTDIR)$(PREFIX)/bin/$(PROGRAM)
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/$(PROGRAM)
 	mkdir -p $(DESTDIR)$(MANPREFIX)/man1
 	cp -f $(PROGRAM).1 $(DESTDIR)$(MANPREFIX)/man1
