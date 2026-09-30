@@ -69,13 +69,13 @@ then
 	then
 		printf '%s\n' "$data"
 	else
-		line=$(printf '%s' "$data" | grep "^$2 ")
-		value=$(echo "$line" \
+		value=$(printf '%s\n' "$data" \
+		      | grep "^$2 " \
 		      | sed 's/^[^[:space:]]*[[:space:]][[:space:]]*//')
 
 		[ -z "$value" ] && error "Field $2 is not set."
 
-		echo "$value"
+		printf '%s\n' "$value"
 	fi
 fi
 
