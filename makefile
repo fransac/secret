@@ -2,11 +2,14 @@ include config.mk
 
 PROGRAM=secret
 
-.PHONY: all install uninstall
+.PHONY: all clean install uninstall
 
-all:
+all: $(PROGRAM).1
 
-install:
+clean:
+	rm -f $(PROGRAM).1
+
+install: all
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	cp -f $(PROGRAM).sh $(DESTDIR)$(PREFIX)/bin/$(PROGRAM)
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/$(PROGRAM)
@@ -17,3 +20,6 @@ install:
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PROGRAM)
 	rm -f $(DESTDIR)$(MANPREFIX)/man1/$(PROGRAM).1
+
+$(PROGRAM).1:
+	$(SCDOC) < $(PROGRAM).1.scd > $@
