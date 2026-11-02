@@ -55,27 +55,37 @@ shift $((OPTIND - 1))
 [ $((m + n)) -eq 0 ] && [ $# -gt 2 ] && usage
 [ $((m + n)) -gt 0 ] && [ $# -gt 0 ] && usage
 
+# Check directory.
+[ -d "$SECRET_DIR" ] || error "Directory $SECRET_DIR does not exist."
+
 # Unflagged implementations.
-[ $((m + n)) -eq 0 ] && [ $# -eq 0 ] && [ -d "$SECRET_DIR" ] && ls "$SECRET_DIR"
-if [ $((m + n)) -eq 0 ] && [ $# -gt 0 ]
+if [ $((m + n)) -eq 0 ]
 then
-	entry_file="$SECRET_DIR/$1"
-
-	[ -f "$entry_file" ] || error "Entry $1 does not exist."
-
-	data=$("$AGE" -d -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file")
-
-	if [ -z "${2:-}" ]
+	if [ $# -eq 0 ]
 	then
-		printf '%s\n' "$data"
+		for f in $(find "$SECRET_DIR" -type f | sort)
+		do
+			printf '%s\n' "${f#$SECRET_DIR/}"
+		done
 	else
-		value=$(printf '%s\n' "$data" \
-		      | grep "^$2 " \
-		      | sed 's/^[^[:space:]]*[[:space:]][[:space:]]*//')
+		entry_file="$SECRET_DIR/$1"
 
-		[ -z "$value" ] && error "Field $2 is not set."
+		[ -f "$entry_file" ] || error "Entry $1 does not exist."
 
-		printf '%s\n' "$value"
+		data=$("$AGE" -d -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file")
+
+		if [ -z "${2:-}" ]
+		then
+			printf '%s\n' "$data"
+		else
+			value=$(printf '%s\n' "$data" \
+			      | grep "^$2 " \
+			      | sed 's/^[^[:space:]]*[[:space:]][[:space:]]*//')
+
+			[ -z "$value" ] && error "Field $2 is not set."
+
+			printf '%s\n' "$value"
+		fi
 	fi
 fi
 
