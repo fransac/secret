@@ -79,8 +79,8 @@ then
 			printf '%s\n' "$data"
 		else
 			value=$(printf '%s\n' "$data" \
-			      | grep "^$2 " \
-			      | sed 's/^[^[:space:]]*[[:space:]][[:space:]]*//')
+			      | grep "^$2\t" \
+			      | cut -f 2)
 
 			[ -z "$value" ] && error "Field $2 is not set."
 
