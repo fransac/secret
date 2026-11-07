@@ -14,6 +14,10 @@ secret - handle secrets using _age_(1)
 
 *secret* is a POSIX utility to handle secrets using age encryption.
 
+If only the _entry_ argument is passed, its entire content is printed.
+
+If the _field_ argument is passed too, its value is printed.
+
 # OPTIONS
 
 \-m _entry_
@@ -24,12 +28,13 @@ secret - handle secrets using _age_(1)
 
 # ENTRIES
 
-An _entry_, when decrypted, is a file whose lines are in "name value" format. Each
-line is a _field_ of the _entry_.  For example:
+An _entry_, when decrypted, is a multi-line tab-separated list; each of its rows
+is a _field_ of the _entry_. The first column is the name of the field, while the
+second column is its value.
 
 ```
-username myusername
-password mypassword
+username	myusername
+password	mypassword
 ```
 
 # ENVIRONMENT
