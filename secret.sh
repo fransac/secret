@@ -97,7 +97,5 @@ else
 	chmod 600 "$entry_file.tmp"
 	"$EDITOR" "$entry_file.tmp"
 	"$AGE" -r "$SECRET_PUBLIC_KEY" -o "$entry_file" "$entry_file.tmp"
-	shred -un 5 "$entry_file.tmp"
-	chmod 600 "$entry_file"
-
+	rm -f "$entry_file.tmp"
 fi
