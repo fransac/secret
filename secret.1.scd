@@ -7,8 +7,7 @@ secret - handle secrets using _age_(1)
 # SYNOPSIS
 
 *secret* [_entry_] [_field_] ++
-*secret* -m _entry_ ++
-*secret* -n _entry_
+*secret* -e _entry_
 
 # DESCRIPTION
 
@@ -20,11 +19,8 @@ If the _field_ argument is passed too, its value is printed.
 
 # OPTIONS
 
-\-m _entry_
-	Modify _entry_.
-
-\-n _entry_
-	Create _entry_ and modify it.
+\-e _entry_
+	Modify _entry_. The _entry_ is created if it does not already exist.
 
 # ENTRIES
 

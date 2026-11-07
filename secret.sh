@@ -17,8 +17,7 @@ usage()
 {
 	u=$({
 		echo "Usage: $program [entry] [field]"
-		echo "       $program -m entry"
-		echo "       $program -n entry"
+		echo "       $program -e entry"
 	})
 
 	error "$u"
@@ -28,20 +27,15 @@ usage()
 [ -z "${EDITOR:-}" ] && error "EDITOR is not set."
 [ -z "${SECRET_PUBLIC_KEY:-}" ] && error "SECRET_PUBLIC_KEY is not set."
 
-m=0
-n=0
-arg=''
+eflag=0
+entry=''
 
-while getopts "m:n:" o 2>/dev/null
+while getopts "e:" o 2>/dev/null
 do
 	case "$o" in
-	m)
-		m=1
-		arg="$OPTARG"
-		;;
-	n)
-		n=1
-		arg="$OPTARG"
+	e)
+		eflag=1
+		entry="$OPTARG"
 		;;
 	*)
 		usage
@@ -52,14 +46,14 @@ done
 shift $((OPTIND - 1))
 
 # Check number of arguments.
-[ $((m + n)) -eq 0 ] && [ $# -gt 2 ] && usage
-[ $((m + n)) -gt 0 ] && [ $# -gt 0 ] && usage
+[ $eflag -eq 0 ] && [ $# -gt 2 ] && usage
+[ $eflag -gt 0 ] && [ $# -gt 0 ] && usage
 
 # Check directory.
 [ -d "$SECRET_DIR" ] || error "Directory $SECRET_DIR does not exist."
 
-# Unflagged implementations.
-if [ $((m + n)) -eq 0 ]
+# Implementation.
+if [ $eflag -eq 0 ]
 then
 	if [ $# -eq 0 ]
 	then
@@ -87,36 +81,23 @@ then
 			printf '%s\n' "$value"
 		fi
 	fi
-fi
+else
+	entry_file="$SECRET_DIR/$entry"
 
-# M flag imlpementation
-if [ $m -eq 1 ]
-then
-	entry_file="$SECRET_DIR/$arg"
+	if [ -f "$entry_file" ]
+	then
+		"$AGE" -d \
+		       -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file" \
+		       > "$entry_file.tmp"
+	else
+		mkdir -p "$(dirname "$entry_file.tmp")"
+		touch "$entry_file.tmp"
+	fi
 
-	[ -f "$entry_file" ] || error "Entry $arg does not exist."
-
-	"$AGE" -d \
-	       -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file" > "$entry_file.tmp"
 	chmod 600 "$entry_file.tmp"
 	"$EDITOR" "$entry_file.tmp"
 	"$AGE" -r "$SECRET_PUBLIC_KEY" -o "$entry_file" "$entry_file.tmp"
 	shred -un 5 "$entry_file.tmp"
 	chmod 600 "$entry_file"
-fi
 
-# N flag imlpementation
-if [ $n -eq 1 ]
-then
-	entry_file="$SECRET_DIR/$arg"
-
-	[ -f "$entry_file" ] && error "Entry $arg already exists."
-
-	mkdir -p "$SECRET_DIR"
-	touch "$entry_file.tmp"
-	chmod 600 "$entry_file.tmp"
-	"$EDITOR" "$entry_file.tmp"
-	"$AGE" -r "$SECRET_PUBLIC_KEY" -o "$entry_file" "$entry_file.tmp"
-	shred -un 5 "$entry_file.tmp"
-	chmod 600 "$entry_file"
 fi
