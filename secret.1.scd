@@ -13,6 +13,8 @@ secret - handle secrets using _age_(1)
 
 *secret* is a POSIX utility to handle secrets using age encryption.
 
+If no argument is passed, the entry names are printed.
+
 If only the _entry_ argument is passed, the field names of _entry_ are printed.
 
 If the _field_ argument is passed too, its value is printed.
