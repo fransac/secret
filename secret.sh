@@ -68,7 +68,7 @@ then
 
 		data=$("$AGE" -d -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file")
 
-		if [ -z "${2:-}" ]
+		if [ $# -eq 1 ]
 		then
 			printf '%s\n' "$data"
 		else
