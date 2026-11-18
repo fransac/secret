@@ -86,8 +86,7 @@ else
 
 	if [ -f "$entry_file" ]
 	then
-		"$AGE" -d \
-		       -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file" \
+		"$AGE" -d -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file" \
 		       > "$entry_file.tmp"
 	else
 		mkdir -p "$(dirname "$entry_file.tmp")"
