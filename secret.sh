@@ -70,7 +70,7 @@ then
 
 		if [ $# -eq 1 ]
 		then
-			printf '%s\n' "$data" | cut -f 1
+			printf '%s\n' "$data" | cut -f 1 | sort
 		else
 			value=$(printf '%s\n' "$data" \
 			      | grep "^$2\t" \
