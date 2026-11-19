@@ -12,12 +12,3 @@ Installation
 ------------
 
 	# make install
-
-Usage
------
-
-	$ secret [entry] [field]
-	$ secret -m entry
-	$ secret -n entry
-
-Read the secret(1) manpage for more detail.
