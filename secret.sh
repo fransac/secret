@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-program=$(basename "$0")
+program=`basename "$0"`
 
 AGE=${AGE:-age}
 SECRET_DIR=${SECRET_DIR:-~/.secret}
@@ -15,10 +15,10 @@ error()
 
 usage()
 {
-	u=$({
+	u=`{
 		echo "Usage: $program [entry] [field]"
 		echo "       $program -e entry"
-	})
+	}`
 
 	error "$u"
 }
@@ -43,7 +43,7 @@ do
 	esac
 done
 
-shift $((OPTIND - 1))
+shift `expr $OPTIND - 1`
 
 # Check number of arguments.
 [ $eflag -eq 0 ] && [ $# -gt 2 ] && usage
@@ -57,7 +57,7 @@ if [ $eflag -eq 0 ]
 then
 	if [ $# -eq 0 ]
 	then
-		for f in $(find "$SECRET_DIR" -type f | sort)
+		for f in `find "$SECRET_DIR" -type f | sort`
 		do
 			printf '%s\n' "${f#$SECRET_DIR/}"
 		done
@@ -66,15 +66,15 @@ then
 
 		[ -f "$entry_file" ] || error "Entry $1 does not exist."
 
-		data=$("$AGE" -d -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file")
+		data=`"$AGE" -d -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file"`
 
 		if [ $# -eq 1 ]
 		then
 			printf '%s\n' "$data" | cut -f 1 | sort
 		else
-			value=$(printf '%s\n' "$data" \
+			value=`printf '%s\n' "$data" \
 			      | grep "^$2\t" \
-			      | cut -f 2)
+			      | cut -f 2`
 
 			[ -z "$value" ] && error "Field $2 is not set."
 
@@ -89,7 +89,7 @@ else
 		"$AGE" -d -i "$SECRET_PRIVATE_KEY_FILE" "$entry_file" \
 		       > "$entry_file.tmp"
 	else
-		mkdir -p "$(dirname "$entry_file.tmp")"
+		mkdir -p `dirname "$entry_file.tmp"`
 		touch "$entry_file.tmp"
 	fi
 
