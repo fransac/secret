@@ -6,8 +6,8 @@ A POSIX utility to handle secrets using age encryption.
 Requirements
 ------------
 
-- age
-- scdoc
+- age(1) (runtime)
+- scdoc(1)
 
 Installation
 ------------
